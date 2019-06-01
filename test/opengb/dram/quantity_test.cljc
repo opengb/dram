@@ -1,6 +1,7 @@
 (ns opengb.dram.quantity-test
   (:require
-    [clojure.test :as t :refer [deftest is testing]]
+    [clojure.spec.alpha :as s]
+    [clojure.test :as t :refer [deftest is are testing]]
     [opengb.dram.quantity :as q :refer [Q_]]))
 
 ; (deftest can-tests-fail?
@@ -20,3 +21,11 @@
     (is (q/quantity? (Q_ 1 "m**2")))
     (is (not (q/quantity? ["m**2" 1])))
     (is (not (q/quantity? 'foo)))))
+
+(deftest specs
+  (testing "spec validity"
+    (is (s/valid? ::q/quantity (Q_ 5.0 "m**2")))
+    (is (s/valid? ::q/area (Q_ 5.0 "m**2")))
+    (is (s/valid? ::q/energy-use-intensity (Q_ 15.0 "kWh/m**2/year")))
+    (is (s/valid? ::q/mass-per-year (Q_ 15.0 "t/year")))
+    (is (s/valid? ::q/mass-intensity (Q_ 15.0 "t/m**2/year")))))
