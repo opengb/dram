@@ -8,14 +8,19 @@
 
 (s/def ::unit known-units)
 
-(defprotocol Quantifiable
+(defprotocol IQuantity
   (get-magnitude [q])
-  (get-unit [q]))
+  (set-magnitude! [q mag'])
+  (get-unit [q])
+  (convert [q unit]))
 
+;; perf gain for reductions?
+;; https://stackoverflow.com/questions/3132931/mutable-fields-in-clojure-deftype
 (deftype quantity
-  [^:double mag unit]
-  Quantifiable
+  [^{#_#_:volatile-mutable true :double true} mag unit]
+  IQuantity
   (get-magnitude [q] (.-mag q))
+  ; (set-magnitude! [q mag'] (set! (.-mag q) mag'))
   (get-unit [q] (.-unit q)))
 
 (defn quantity?
@@ -26,7 +31,9 @@
   [^:double mag unit]
   (if (and (s/valid? ::magnitude mag)
            (s/valid? ::unit unit))
-    (->quantity mag unit)
+    (->quantity (double mag) unit)
     (throw (IllegalArgumentException.))))
 
-(def Q_ make-quantity)
+(def Q_
+  "pint-style shorthand for literals"
+  make-quantity)
