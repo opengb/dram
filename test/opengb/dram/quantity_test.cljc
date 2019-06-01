@@ -1,8 +1,8 @@
-(ns opengb.dram.core-test
+(ns opengb.dram.quantity-test
   (:require
     [clojure.spec.alpha :as s]
     [clojure.test :as t :refer [deftest is testing]]
-    [opengb.dram.core :as sut :refer [Q_]]))
+    [opengb.dram.quantity :as sut :refer [Q_]]))
 
 ; (deftest can-tests-fail?
 ;   (is (= 1 2)))

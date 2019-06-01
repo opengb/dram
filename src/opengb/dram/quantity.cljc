@@ -1,4 +1,5 @@
-(ns opengb.dram.core
+(ns opengb.dram.quantity
+  "manipulating physical quantities"
   (:require
     [clojure.spec.alpha :as s]))
 
