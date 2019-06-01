@@ -2,7 +2,8 @@
   "deftype-based implementation"
   (:require
     [clojure.set :refer [union]]
-    [clojure.spec.alpha :as s]))
+    [clojure.spec.alpha :as s]
+    [clojure.spec.gen.alpha :as gen]))
 
 (def area-unit? #{"m**2" "ft**2"})
 
@@ -54,12 +55,20 @@
   "pint-style shorthand for literals"
   make-quantity)
 
-(s/def ::quantity quantity?)
+(defn- quantity-generator
+  []
+  (gen/fmap #(apply make-quantity %)
+            (gen/tuple (gen/double* {:infinite? false :NaN false})
+                       (s/gen known-units))))
 
-(s/def ::area (s/and quantity? #(area-unit? (get-unit %))))
+(s/def ::quantity (s/with-gen quantity? quantity-generator))
 
-(s/def ::energy-use-intensity (s/and quantity? #(eui-unit? (get-unit %))))
+(s/def ::area (s/and ::quantity #(area-unit? (get-unit %))))
 
-(s/def ::mass-per-year (s/and quantity? #(mass-per-year-unit? (get-unit %))))
+(s/def ::energy-use-intensity (s/and ::quantity #(eui-unit? (get-unit %))))
 
-(s/def ::mass-intensity (s/and quantity? #(mass-intensity-unit? (get-unit %))))
+(s/def ::mass-per-year (s/and ::quantity #(mass-per-year-unit? (get-unit %))))
+
+(s/def ::mass-intensity (s/and ::quantity #(mass-intensity-unit? (get-unit %))))
+
+

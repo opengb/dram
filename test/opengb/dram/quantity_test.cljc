@@ -2,7 +2,9 @@
   (:require
     [clojure.spec.alpha :as s]
     [clojure.test :as t :refer [deftest is are testing]]
-    [opengb.dram.quantity :as q :refer [Q_]]))
+    [clojure.test.check.clojure-test :refer [defspec]]
+    [clojure.test.check.properties :as prop #?@(:cljs [:include-macros true])]
+    [opengb.dram.quantity2 :as q :refer [Q_]]))
 
 ; (deftest can-tests-fail?
 ;   (is (= 1 2)))
@@ -29,3 +31,8 @@
     (is (s/valid? ::q/energy-use-intensity (Q_ 15.0 "kWh/m**2/year")))
     (is (s/valid? ::q/mass-per-year (Q_ 15.0 "t/year")))
     (is (s/valid? ::q/mass-intensity (Q_ 15.0 "t/m**2/year")))))
+
+(defspec quantity-generator-produces-quantities
+  10
+  (prop/for-all [x (s/gen ::q/quantity)]
+                (q/quantity? x)))

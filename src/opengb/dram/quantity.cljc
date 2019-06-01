@@ -25,6 +25,8 @@
 
 (s/def ::unit known-units)
 
+(s/def ::quantity (s/cat :mag ::magnitude :unit ::unit))
+
 (defn make-quantity
   [^:double mag unit]
   {:pre [(s/valid? ::magnitude mag)
@@ -44,8 +46,6 @@
 (defn quantity?
   [x]
   (s/valid? ::quantity x))
-
-(s/def ::quantity (s/cat :mag ::magnitude :unit ::unit))
 
 (s/def ::area (s/and quantity? #(area-unit? (get-unit %))))
 
