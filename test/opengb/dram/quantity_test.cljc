@@ -1,30 +1,23 @@
 (ns opengb.dram.quantity-test
   (:require
-    [clojure.spec.alpha :as s]
     [clojure.test :as t :refer [deftest is testing]]
-    [opengb.dram.quantity :as sut :refer [Q_]]))
+    [opengb.dram.quantity :as q :refer [Q_]]))
 
 ; (deftest can-tests-fail?
 ;   (is (= 1 2)))
 
 (deftest basic-structure
-  (testing "creating"
-    (is (= [1 :m2] (sut/make-quantity 1 :m2)))
-    (is (= [1 :m2] (Q_ 1 :m2))))
-  (testing "extracting"
-    (let [q (sut/make-quantity 1 :m2)]
-      (is (= 1 (sut/get-magnitude q)))
-      (is (= :m2 (sut/get-unit q)))))
-  (testing "specs correctly report s/valid? for valid qtys"
-    (is (s/valid? ::sut/quantity [1 :m2]))
-    (is (s/valid? ::sut/magnitude 1))
-    (is (s/valid? ::sut/magnitude 1.0))
-    (is (s/valid? ::sut/unit :m2)))
-  (testing "specs correctly report s/valid? for invalid qtys"
-    (is (not (s/valid? ::sut/quantity [1 :bad-unit])))
-    (is (not (s/valid? ::sut/quantity [:m2 1])))
-    (is (not (s/valid? ::sut/magnitude "not-a-number")))
-    (is (not (s/valid? ::sut/unit :any-old-keyword))))
-  (testing "quantity?"
-    (is (sut/quantity? (Q_ 1 :m2)))
-    (is (not (sut/quantity? [:m2 1])))))
+  (testing "making"
+    (is (some? (q/make-quantity 5 :m2)))
+    (is (thrown? IllegalArgumentException
+                 (q/make-quantity :m2 5))))
+
+  (testing "extracting parts"
+    (let [q (q/make-quantity 1 :m2)]
+      (is (= 1 (q/get-magnitude q)))
+      (is (= :m2 (q/get-unit q)))))
+
+  (testing "quantity? predicate"
+    (is (q/quantity? (Q_ 1 :m2)))
+    (is (not (q/quantity? [:m2 1])))
+    (is (not (q/quantity? 'foo)))))

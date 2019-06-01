@@ -12,9 +12,11 @@
 (s/def ::quantity (s/cat :mag ::magnitude :unit ::unit))
 
 (defn make-quantity
-  "wrap up a quantity"
-  [mag unit]
-  (vector mag unit))
+  [^:double mag unit]
+  (if (and (s/valid? ::magnitude mag)
+           (s/valid? ::unit unit))
+    (vector mag unit)
+    (throw (IllegalArgumentException.))))
 
 (s/fdef make-quantity
         :args (s/cat :mag ::magnitude :unit ::unit)
