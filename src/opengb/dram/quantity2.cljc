@@ -12,7 +12,8 @@
 
 (def mass-per-year-unit? #{"t/year" "kg/year" "Mg/year" "lb/year"})
 
-(def mass-intensity-unit? #{"t/m**2/year" "t/ft**2/year" "lb/ft**2/year"})
+(def mass-intensity-unit? #{"kg/m**2/year" "t/m**2/year" "t/ft**2/year"
+                            "lb/ft**2/year"})
 
 (def volume-per-year-unit? #{"l/m**2/year"})
 
