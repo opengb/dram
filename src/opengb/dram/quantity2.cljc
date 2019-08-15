@@ -10,9 +10,12 @@
 (def eui-unit?
   #{"kBtu/ft**2/year" "GJ/m**2/year" "kWh/m**2/year" "kWh/ft**2/year"})
 
-(def mass-per-year-unit? #{"t/year" "kg/year" "lb/year"})
+(def mass-per-year-unit? #{"t/year" "kg/year" "Mg/year" "lb/year"})
 
-(def mass-intensity-unit? #{"t/m**2/year" "t/ft**2/year" "lb/ft**2/year"})
+(def mass-intensity-unit? #{"kg/m**2/year" "t/m**2/year" "t/ft**2/year"
+                            "lb/ft**2/year"})
+
+(def volume-per-year-unit? #{"l/m**2/year"})
 
 (def known-units
   "adding combos is in fact ridiculous ... we should split out a dimensionality type
@@ -20,7 +23,8 @@
   (union area-unit?
          eui-unit?
          mass-per-year-unit?
-         mass-intensity-unit?))
+         mass-intensity-unit?
+         volume-per-year-unit?))
 
 (s/def ::magnitude number?)
 
