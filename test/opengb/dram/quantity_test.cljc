@@ -1,7 +1,7 @@
 (ns opengb.dram.quantity-test
   (:require
     [clojure.spec.alpha :as s]
-    [clojure.test :as t :refer [deftest is are testing]]
+    [clojure.test :as t :refer [deftest is testing]]
     [clojure.test.check.clojure-test :refer [defspec]]
     [clojure.test.check.properties :as prop #?@(:cljs [:include-macros true])]
     [opengb.dram.quantity2 :as q :refer [Q_]]))

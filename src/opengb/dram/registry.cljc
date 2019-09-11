@@ -2,7 +2,8 @@
   "Functions for maintaining/using the unit registry, which fully defines
    how conversion works."
   (:require
-   [clojure.string :as string]))
+   [clojure.string :as string]
+   [opengb.dram.unit :as unit]))
 
 (defn make-registry
   "Make an empty unit registry."
@@ -32,9 +33,17 @@
         definitions (into {name value} (for [a aliases] [a value]))]
     (update reg (:kind definition-map) merge definitions)))
 
-(def default-registry
+(defn default-registry
+  []
   (-> (make-registry)
       (add-definition {})))
+
+(defn convert
+  "backwards to allow easy partials"
+  [_registry destination-unit source-unit magnitude]
+  {:pre [(number? magnitude)
+         (unit/same-dimensionality? destination-unit source-unit)]}
+  3.28)
 
 (comment
  (def sample-definitions
@@ -43,6 +52,7 @@
     " yocto- = 1e-24 = y- "
     " yard = 0.9144 * meter = yd = international_yard  # since Jul 1959 "
     " [area] = [length] ** 2 "])
+
  (map parse-raw-definition sample-definitions)
 
  (add-definition
@@ -55,6 +65,5 @@
         (map parse-raw-definition)
         (reduce #(add-definition %1 %2)
                 (make-registry))))
-
 
  )
