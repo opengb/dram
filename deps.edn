@@ -6,11 +6,11 @@
                       "--middleware"
                       "[cider.nrepl/cider-middleware]"]}
   :test {:extra-deps
-         #:lambdaisland{kaocha #:mvn{:version "0.0-418"}
-                        kaocha-cljs #:mvn{:version "0.0-32"}}
+         #:lambdaisland{kaocha #:mvn{:version "0.0-541"}
+                        kaocha-cljs #:mvn{:version "0.0-51"}}
          :extra-paths ["test"]
          :main-opts ["-m" "kaocha.runner"]}}
- :deps {org.clojure/clojure #:mvn{:version "1.10.0"}
+ :deps {org.clojure/clojure #:mvn{:version "1.10.1"}
         org.clojure/spec.alpha #:mvn{:version "0.2.176"}
-        org.clojure/test.check #:mvn{:version "0.10.0-alpha4"}}
+        org.clojure/test.check #:mvn{:version "0.10.0"}}
  :paths ["src"]}
