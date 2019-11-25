@@ -14,7 +14,7 @@
 (def mass-intensity-unit? #{"kg/m**2/year" "t/m**2/year" "t/ft**2/year"
                             "lb/ft**2/year"})
 
-(def volume-per-year-unit? #{"l/m**2/year"})
+(def volume-intensity-unit? #{"l/m**2/year"})
 
 (def per-year-unit? #{"kWh/year" "l/year"})
 
@@ -25,7 +25,7 @@
          eui-unit?
          mass-per-year-unit?
          mass-intensity-unit?
-         volume-per-year-unit?
+         volume-intensity-unit?
          per-year-unit?))
 
 (s/def ::magnitude number?)
