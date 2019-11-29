@@ -28,6 +28,25 @@
          volume-intensity-unit?
          per-year-unit?))
 
+(def us-customary-unit? #{"ft**2"
+                          "lb/year"
+                          "t/year"
+                          "kBtu/ft**2/year"
+                          "kWh/ft**2/year"
+                          "t/ft**2/year"
+                          "lb/ft**2/year"})
+
+(def metric-unit? #{"m**2"
+                    "kg/m**2/year"
+                    "t/m**2/year"
+                    "GJ/m**2/year"
+                    "kg/year"
+                    "Mg/year"
+                    "kWh/m**2/year"
+                    "l/m**2/year"
+                    "kWh/year"
+                    "l/year"})
+
 (s/def ::magnitude number?)
 
 (s/def ::unit known-units)
@@ -63,3 +82,7 @@
 (s/def ::mass-intensity (s/and quantity? #(mass-intensity-unit? (get-unit %))))
 
 (s/def ::volume-intensity (s/and quantity? #(volume-intensity-unit? (get-unit %))))
+
+(s/def ::us-customary (s/and quantity? #(us-customary-unit? (get-unit %))))
+
+(s/def ::metric (s/and quantity? #(metric-unit? (get-unit %))))
