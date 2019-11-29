@@ -153,3 +153,25 @@
       (= unit "ft**2")           (area-to-metric quantity)
       (= unit "kBtu/ft**2/year") (energy-intensity-to-metric quantity)
       :otherwise                 (throw (ex-info "Only supported for ft**2 and kBtu." {:quantity quantity})))))
+
+;; * i18n
+
+(defn unit->ui-string
+  "Formats the `unit` for display to a user."
+  [unit]
+  (let [cs {:mi2              "sq mi"
+            :ft2              "sq ft"
+            :ft2_a            "ft²/year"
+            :USD_ft2_a        "USD/ft²/year"
+            :m2               "m²"
+            :GJ_m2_a          "GJ/m²/year"
+            :kWh_m2_a         "kWh/m²/year"
+            :tCO2e_a          "tCO₂e/year"
+            "m**2"            "m²"
+            "kWh/m**2/year"   "kWh/m²"
+            "kg/m**2/year"    "kg/m²"
+            "l/m**2/year"     "l/m²"
+            "kBtu/ft**2/year" "kBtu/ft²/year"
+            "ft**2"           "ft²"
+            }]
+    (get cs unit unit)))
