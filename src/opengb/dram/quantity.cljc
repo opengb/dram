@@ -2,7 +2,8 @@
   "manipulating physical quantities"
   (:require
     [clojure.set :refer [union]]
-    [clojure.spec.alpha :as s]))
+    [clojure.spec.alpha :as s]
+    [opengb.dram.util]))
 
 (def area-unit? #{"m**2" "ft**2"})
 
@@ -47,7 +48,7 @@
                     "kWh/year"
                     "l/year"})
 
-(s/def ::magnitude number?)
+(s/def ::magnitude opengb.dram.util/strictly-a-number?)
 
 (s/def ::unit known-units)
 
@@ -88,6 +89,14 @@
 (s/def ::metric (s/and quantity? #(metric-unit? (get-unit %))))
 
 ;; * Conversions
+
+;; ** Making Quantities
+
+(defn can-convert-to-quantity?
+  "True when the given `magnitude` and `unit` can be converted into a quantity."
+  [magnitude unit]
+  (and (s/valid? ::magnitude magnitude)
+       (s/valid? ::unit unit)))
 
 ;; ** Intensities and Totals
 
