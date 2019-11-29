@@ -89,6 +89,8 @@
 
 ;; * Conversions
 
+;; ** Intensities and Totals
+
 (defn calculate-total-water-use
   "Provides total water use in l/year."
   [intensity area]
@@ -124,3 +126,30 @@
     (s/valid? ::volume-intensity intensity)     (calculate-total-water-use intensity area)
     :default                                    (throw (ex-info "Only supported for volume and energy intensities." {:intensity intensity
                                                                                                                      :area      area}))))
+
+;; ** US Customary and Metric
+
+(defn energy-intensity-to-metric
+  "Converts a US Customary energy intensity to the Metric equivalent."
+  [quantity]
+  (let [[mag unit] quantity]
+    (if (= unit "kBtu/ft**2/year")
+      [(* mag 3.155) "kWh/m**2/year"]
+      (throw (ex-info "Can't convert given quantity to kWh" {:quantity quantity})))))
+
+(defn area-to-metric
+  "Converts a US Customary area to the Metric equivalent."
+  [quantity]
+  (let [[mag unit] quantity]
+    (if (= unit "ft**2")
+      [(/ mag 3.28 3.28) "m**2"]
+      (throw (ex-info "Can't convert given quantity to metric" {:quantity quantity})))))
+
+(defn us-customary-to-metric
+  "Converts the given `quantity` from US Customary units to Metric."
+  [quantity]
+  (let [unit (get-unit quantity)]
+    (cond
+      (= unit "ft**2")           (area-to-metric quantity)
+      (= unit "kBtu/ft**2/year") (energy-intensity-to-metric quantity)
+      :otherwise                 (throw (ex-info "Only supported for ft**2 and kBtu." {:quantity quantity})))))
