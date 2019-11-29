@@ -61,3 +61,5 @@
 (s/def ::mass-per-year (s/and quantity? #(mass-per-year-unit? (get-unit %))))
 
 (s/def ::mass-intensity (s/and quantity? #(mass-intensity-unit? (get-unit %))))
+
+(s/def ::volume-intensity (s/and quantity? #(volume-intensity-unit? (get-unit %))))
