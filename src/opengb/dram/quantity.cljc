@@ -86,3 +86,41 @@
 (s/def ::us-customary (s/and quantity? #(us-customary-unit? (get-unit %))))
 
 (s/def ::metric (s/and quantity? #(metric-unit? (get-unit %))))
+
+;; * Conversions
+
+(defn calculate-total-water-use
+  "Provides total water use in l/year."
+  [intensity area]
+  {:pre [(s/valid? ::volume-intensity intensity)
+         (s/valid? ::metric intensity)
+         (s/valid? ::area area)
+         (s/valid? ::metric area)]}
+  (let [water-magnitude   (get-magnitude intensity)
+        area-magnitude    (get-magnitude area)
+        total-volume-unit "l/year"]
+    (make-quantity (* water-magnitude
+                      area-magnitude)
+                   total-volume-unit)))
+
+(defn calculate-total-energy-use
+  "Calculates total energy use in kWh/year."
+  [intensity area]
+  {:pre [(s/valid? ::energy-use-intensity intensity)
+         (s/valid? ::metric intensity)
+         (s/valid? ::area area)
+         (s/valid? ::metric area)]}
+  (let [energy-magnitude  (get-magnitude intensity)
+        area-magnitude    (get-magnitude area)
+        total-energy-unit "kWh/year"]
+    (make-quantity (* energy-magnitude
+                      area-magnitude)
+                   total-energy-unit)))
+
+(defn intensity->total
+  [intensity area]
+  (cond
+    (s/valid? ::energy-use-intensity intensity) (calculate-total-energy-use intensity area)
+    (s/valid? ::volume-intensity intensity)     (calculate-total-water-use intensity area)
+    :default                                    (throw (ex-info "Only supported for volume and energy intensities." {:intensity intensity
+                                                                                                                     :area      area}))))
