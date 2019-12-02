@@ -4,6 +4,18 @@
     [clojure.set :refer [union]]
     [clojure.spec.alpha :as s]))
 
+;; * Utilities
+
+(defn- assert-or-report
+  "When `data` doesn't conform to `spec`, prints why it is not valid to std out
+  and then throws an assertion error.
+  In any case, evaluates to `nil`."
+  [spec data]
+  (assert (or (s/valid? spec data)
+              (s/explain spec data))))
+
+;; * Definitions
+
 (def area-unit? #{"m**2" "ft**2"})
 
 (def eui-unit?
@@ -56,8 +68,8 @@
 
 (defn make-quantity
   [^:double mag unit]
-  {:pre [(s/valid? ::magnitude mag)
-         (s/valid? ::unit unit)]}
+  (assert-or-report ::magnitude mag)
+  (assert-or-report ::unit unit)
   (vector (double mag) unit))
 
 (s/fdef make-quantity
