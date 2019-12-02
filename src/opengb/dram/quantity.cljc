@@ -9,10 +9,16 @@
 (defn- assert-or-report
   "When `data` doesn't conform to `spec`, prints why it is not valid to std out
   and then throws an assertion error.
-  In any case, evaluates to `nil`."
-  [spec data]
-  (assert (or (s/valid? spec data)
-              (s/explain spec data))))
+  In any case, evaluates to `nil`.
+  Optionally, accepts a message to be printed when the data doesn't conform
+  to the spec."
+  ([spec data]
+   (assert (or (s/valid? spec data)
+               (s/explain spec data))))
+  ([spec data message]
+   (assert (or (s/valid? spec data)
+               (s/explain spec data))
+           message)))
 
 ;; * Definitions
 
@@ -112,68 +118,57 @@
 
 ;; ** Intensities and Totals
 
-(defn calculate-total-water-use
-  "Provides total water use in l/year."
+(defn intensity->total
   [intensity area]
-  {:pre [(s/valid? ::volume-intensity intensity)
-         (s/valid? ::metric intensity)
-         (s/valid? ::area area)
-         (s/valid? ::metric area)]}
-  (let [water-magnitude   (get-magnitude intensity)
-        area-magnitude    (get-magnitude area)
-        total-volume-unit "l/year"]
-    (make-quantity (* water-magnitude
-                      area-magnitude)
-                   total-volume-unit)))
-
-(defn calculate-total-energy-use
-  "Calculates total energy use in kWh/year."
-  [intensity area]
-  {:pre [(s/valid? ::energy-use-intensity intensity)
-         (s/valid? ::metric intensity)
-         (s/valid? ::area area)
-         (s/valid? ::metric area)]}
-  (let [energy-magnitude  (get-magnitude intensity)
-        area-magnitude    (get-magnitude area)
-        total-energy-unit "kWh/year"]
-    (make-quantity (* energy-magnitude
+  (assert-or-report ::metric intensity "Only Metric intensities are supported.")
+  (assert-or-report ::metric area "Only Metric areas are supported.")
+  (let [intensity-magnitude (get-magnitude intensity)
+        area-magnitude      (get-magnitude area)
+        total-energy-unit
+        (cond
+          (s/valid? ::energy-use-intensity intensity) "kWh/year"
+          (s/valid? ::volume-intensity intensity)     "l/year"
+          :default
+          (throw
+           (ex-info
+            "Only supported for Metric volume and energy intensities."
+            {:intensity intensity
+             :area      area})))]
+    (make-quantity (* intensity-magnitude
                       area-magnitude)
                    total-energy-unit)))
 
-(defn intensity->total
-  [intensity area]
-  (cond
-    (s/valid? ::energy-use-intensity intensity) (calculate-total-energy-use intensity area)
-    (s/valid? ::volume-intensity intensity)     (calculate-total-water-use intensity area)
-    :default                                    (throw (ex-info "Only supported for volume and energy intensities." {:intensity intensity
-                                                                                                                     :area      area}))))
+(comment
+  ;; I have a Metric volume usage intensity; I want total volume usage
+  (def volume-use-intensity (make-quantity 1.2 "l/m**2/year"))
+  ;; => [1.2 "l/m**2/year"]
+  (def area (make-quantity 400 "m**2"))
+  ;; => [400.0 "m**2"]
+  (def total-use (intensity->total volume-use-intensity area))
+  ;; => [480.0 "l/year"]
+  )
 
 ;; ** US Customary and Metric
 
-(defn energy-intensity-to-metric
-  "Converts a US Customary energy intensity to the Metric equivalent."
-  [quantity]
-  (let [[mag unit] quantity]
-    (if (= unit "kBtu/ft**2/year")
-      [(* mag 3.155) "kWh/m**2/year"]
-      (throw (ex-info "Can't convert given quantity to kWh" {:quantity quantity})))))
-
-(defn area-to-metric
-  "Converts a US Customary area to the Metric equivalent."
-  [quantity]
-  (let [[mag unit] quantity]
-    (if (= unit "ft**2")
-      [(/ mag 3.28 3.28) "m**2"]
-      (throw (ex-info "Can't convert given quantity to metric" {:quantity quantity})))))
-
-(defn us-customary-to-metric
+(defn us-customary->metric
   "Converts the given `quantity` from US Customary units to Metric."
   [quantity]
-  (let [unit (get-unit quantity)]
+  (let [mag  (get-magnitude quantity)
+        unit (get-unit quantity)]
     (cond
-      (= unit "ft**2")           (area-to-metric quantity)
-      (= unit "kBtu/ft**2/year") (energy-intensity-to-metric quantity)
-      :otherwise                 (throw (ex-info "Only supported for ft**2 and kBtu." {:quantity quantity})))))
+      (= unit "ft**2")           (make-quantity (/ mag 3.28 3.28) "m**2")
+      (= unit "kBtu/ft**2/year") (make-quantity (* mag 3.155) "kWh/m**2/year")
+      :otherwise                 (throw (ex-info
+                                         "Only supported for ft**2 and kBtu."
+                                         {:quantity quantity})))))
+
+(comment
+  ;; I've got an area in US Customary units; I want the Metric equivalent
+  (def us-customary-area (make-quantity 1200 "ft**2"))
+  ;; => [1200.0 "ft**2"]
+  (def metric-area (us-customary->metric us-customary-area))
+  ;; => [111.54074955383702 "m**2"]
+  )
 
 ;; * i18n
 
