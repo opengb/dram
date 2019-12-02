@@ -2,8 +2,7 @@
   "manipulating physical quantities"
   (:require
     [clojure.set :refer [union]]
-    [clojure.spec.alpha :as s]
-    [opengb.dram.util]))
+    [clojure.spec.alpha :as s]))
 
 (def area-unit? #{"m**2" "ft**2"})
 
@@ -48,7 +47,8 @@
                     "kWh/year"
                     "l/year"})
 
-(s/def ::magnitude opengb.dram.util/strictly-a-number?)
+(s/def ::magnitude (s/or :int int?
+                         :double (s/double-in :infinite? false :NaN? false)))
 
 (s/def ::unit known-units)
 
