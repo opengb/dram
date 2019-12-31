@@ -4,7 +4,11 @@
     [clojure.set :refer [union]]
     [clojure.spec.alpha :as s]))
 
+(def length-unit? #{"m" "ft" "in"})
+
 (def area-unit? #{"m**2" "ft**2"})
+
+(def pressure-unit? #{"lb/ft**2" "kPa"})
 
 (def eui-unit?
   #{"kBtu/ft**2/year" "GJ/m**2/year" "kWh/m**2/year" "kWh/ft**2/year"})
@@ -16,14 +20,19 @@
 
 (def volume-per-year-unit? #{"l/m**2/year"})
 
+(def thermal-transmittance-unit? #{"Btu/hr*ft**2*°F" "W/m**2*K"}) ;; U-value
+
 (def known-units
   "adding combos is in fact ridiculous ... we should split out a dimensionality type
   and some ways of composing like pint does. But this'll work for our purposes."
-  (union area-unit?
+  (union length-unit?
+         area-unit?
+         pressure-unit?
          eui-unit?
          mass-per-year-unit?
          mass-intensity-unit?
-         volume-per-year-unit?))
+         volume-per-year-unit?
+         thermal-transmittance-unit?))
 
 (s/def ::magnitude number?)
 

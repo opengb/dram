@@ -10,7 +10,9 @@
                         kaocha-cljs #:mvn{:version "0.0-51"}}
          :extra-paths ["test"]
          :main-opts ["-m" "kaocha.runner"]}}
- :deps {org.clojure/clojure #:mvn{:version "1.10.1"}
+ :deps {aysylu/loom #:mvn{:version "1.0.2"}
+        org.clojure/clojure #:mvn{:version "1.10.1"}
         org.clojure/spec.alpha #:mvn{:version "0.2.176"}
-        org.clojure/test.check #:mvn{:version "0.10.0"}}
+        org.clojure/test.check #:mvn{:version "0.10.0"}
+        weavejester/dependency #:mvn{:version "0.2.1"}}
  :paths ["src"]}

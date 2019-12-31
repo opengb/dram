@@ -1,4 +1,6 @@
-(ns opengb.dram.unit)
+(ns opengb.dram.unit
+  (:require
+   [weavejester.dependency :as dep]))
 
 (defn parse-unit
   [s]
@@ -22,3 +24,15 @@
   (let [dimensionalities (map ->dimensionality units)]
     (apply = dimensionalities)))
 
+
+(comment
+ (-> (dep/graph)
+     (dep/depend :area :length)
+     (dep/depend :velocity :length)
+     (dep/depend :velocity :time)
+     (dep/depend :acceleration :velocity)
+     (dep/depend :acceleration :time)
+     (dep/transitive-dependencies :acceleration)
+     ; (dep/topo-sort)
+     )
+ )
