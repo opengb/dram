@@ -12,5 +12,5 @@
          :main-opts ["-m" "kaocha.runner"]}}
  :deps {org.clojure/clojure #:mvn{:version "1.10.0"}
         org.clojure/spec.alpha #:mvn{:version "0.2.176"}
-        org.clojure/test.check #:mvn{:version "0.10.0-alpha4"}}
+        org.clojure/test.check #:mvn{:version "0.10.0"}}
  :paths ["src"]}
