@@ -2,6 +2,6 @@
 {:tests [{:id :clj/unit}
          {:id :cljs/unit
           :type :kaocha.type/cljs
-          :cljs/repl-env cljs.repl.browser/repl-env}]
+          :cljs/repl-env cljs.repl.node/repl-env}]
 
  :plugins [:kaocha.plugin/notifier]}
