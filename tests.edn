@@ -1,0 +1,7 @@
+#kaocha/v1
+{:tests [{:id :clj/unit}
+         {:id :cljs/unit
+          :type :kaocha.type/cljs
+          :cljs/repl-env cljs.repl.browser/repl-env}]
+
+ :plugins [:kaocha.plugin/notifier]}

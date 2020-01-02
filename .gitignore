@@ -4,6 +4,7 @@ pom.xml.asc
 *.class
 /lib/
 /classes/
+/out/
 /target/
 /checkouts/
 .lein-deps-sum
