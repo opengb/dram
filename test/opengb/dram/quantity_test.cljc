@@ -12,7 +12,8 @@
 (deftest basic-structure
   (testing "constructor"
     (is (some? (q/make-quantity 5 "m**2")))
-    (is (thrown? AssertionError (q/make-quantity "m**2" 5))))
+    (is (thrown? #?(:clj AssertionError :cljs js/Error)
+                 (q/make-quantity "m**2" 5))))
 
   (testing "destructors"
     (let [q (q/make-quantity 1 "m**2")]
