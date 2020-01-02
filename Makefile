@@ -1,13 +1,15 @@
 all: test
 
 .PHONY: test
-test:
+test: node_modules
 	clojure -A:test
 
-# starts nrepl and a jvm + node prepl
-repl:
-	@clj \
-		-J-Dclojure.server.jvm="{:port 5555 :accept clojure.core.server/io-prepl}" \
-		-J-Dclojure.server.node="{:port 5556 :accept cljs.server.node/prepl}" \
-		-R:test
-		-A:nrepl
+lint:
+	clj-kondo --lint src test
+
+clean:
+	rm -rf out/ target/ .cpcache/ .cljs_node_repl .nrepl-port node_modules package-lock.json
+
+node_modules:
+	npm install ws # for kaocha-cljs
+	touch node_modules

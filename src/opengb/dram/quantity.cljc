@@ -128,7 +128,7 @@
         (cond
           (s/valid? ::energy-use-intensity intensity) "kWh/year"
           (s/valid? ::volume-intensity intensity)     "l/year"
-          :default
+          :else
           (throw
            (ex-info
             "Only supported for Metric volume and energy intensities."
@@ -158,7 +158,7 @@
     (cond
       (= unit "ft**2")           (make-quantity (/ mag 3.28 3.28) "m**2")
       (= unit "kBtu/ft**2/year") (make-quantity (* mag 3.155) "kWh/m**2/year")
-      :otherwise                 (throw (ex-info
+      :else                      (throw (ex-info
                                          "Only supported for ft**2 and kBtu."
                                          {:quantity quantity})))))
 

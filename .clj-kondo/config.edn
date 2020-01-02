@@ -1,0 +1,4 @@
+{:linters
+ {:unresolved-symbol
+  {:exclude [(clojure.test.check.clojure-test/defspec)
+             (clojure.test.check.properties/for-all)]}}}

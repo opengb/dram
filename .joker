@@ -1,3 +1,0 @@
-{:known-macros
- [clojure.test.check.properties/for-all
-  clojure.test.check.clojure-test/defspec]}

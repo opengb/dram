@@ -15,7 +15,7 @@ jobs: # basic units of work in a run
           paths:
             - ~/.m2
           key: cci-demo-clojure-{{ checksum "deps.edn" }}
-      - run: clojure -A:test
+      - run: make test
       # - store_artifacts: # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
       #     path: target/uberjar/cci-demo-clojure.jar
       #     destination: uberjar
