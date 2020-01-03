@@ -1,18 +1,12 @@
 {:aliases
- {:nrepl {:extra-deps {cider/cider-nrepl #:mvn{:version "0.21.1"}
-                       nrepl #:mvn{:version "0.6.0"}}
-          :extra-paths ["dev"]
-          :main-opts ["--main" "nrepl.cmdline" "--interactive"
-                      "--middleware"
-                      "[cider.nrepl/cider-middleware]"]}
-  :test {:extra-deps
-         #:lambdaisland{kaocha #:mvn{:version "0.0-541"}
-                        kaocha-cljs #:mvn{:version "0.0-51"}}
+ {:test {:extra-deps
+         #:lambdaisland{kaocha #:mvn{:version "0.0-565"}
+                        kaocha-cljs #:mvn{:version "0.0-68"}}
          :extra-paths ["test"]
          :main-opts ["-m" "kaocha.runner"]}}
  :deps {aysylu/loom #:mvn{:version "1.0.2"}
         org.clojure/clojure #:mvn{:version "1.10.1"}
         org.clojure/spec.alpha #:mvn{:version "0.2.176"}
-        org.clojure/test.check #:mvn{:version "0.10.0"}
-        weavejester/dependency #:mvn{:version "0.2.1"}}
+        weavejester/dependency #:mvn{:version "0.2.1"}
+        org.clojure/test.check #:mvn{:version "0.10.0"}}
  :paths ["src"]}
