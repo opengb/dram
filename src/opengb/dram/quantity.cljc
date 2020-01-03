@@ -38,6 +38,9 @@
 
 (def per-year-unit? #{"kWh/year" "l/year"})
 
+(def thermal-transmittance-unit? #{"Btu/hr*ft**2*°F"
+                                   "W/m**2*K"})
+
 (def known-units
   "adding combos is in fact ridiculous ... we should split out a dimensionality type
   and some ways of composing like pint does. But this'll work for our purposes."
@@ -47,7 +50,8 @@
          mass-per-year-unit?
          mass-intensity-unit?
          volume-intensity-unit?
-         per-year-unit?))
+         per-year-unit?
+         thermal-transmittance-unit?))
 
 (def us-customary-unit? #{"ft**2"
                           "lb/year"
@@ -106,6 +110,8 @@
 (s/def ::mass-intensity (s/and quantity? #(mass-intensity-unit? (get-unit %))))
 
 (s/def ::volume-intensity (s/and quantity? #(volume-intensity-unit? (get-unit %))))
+
+(s/def ::thermal-transmittance (s/and quantity? #(thermal-transmittance-unit? (get-unit %))))
 
 (s/def ::us-customary (s/and quantity? #(us-customary-unit? (get-unit %))))
 
