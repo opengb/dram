@@ -22,7 +22,9 @@
 
 ;; * Definitions
 
-(def area-unit? #{"m**2" "ft**2"})
+(def length-unit? #{"in" "ft" "yd" "mi" "mm" "cm" "m"})
+
+(def area-unit? (into #{} (map #(str % "**2")) length-unit?))
 
 (def eui-unit?
   #{"kBtu/ft**2/year" "GJ/m**2/year" "kWh/m**2/year" "kWh/ft**2/year"})
@@ -39,7 +41,8 @@
 (def known-units
   "adding combos is in fact ridiculous ... we should split out a dimensionality type
   and some ways of composing like pint does. But this'll work for our purposes."
-  (union area-unit?
+  (union length-unit?
+         area-unit?
          eui-unit?
          mass-per-year-unit?
          mass-intensity-unit?
@@ -91,6 +94,8 @@
 (defn quantity?
   [x]
   (s/valid? ::quantity x))
+
+(s/def ::length (s/and quantity? #(length-unit? (get-unit %))))
 
 (s/def ::area (s/and quantity? #(area-unit? (get-unit %))))
 

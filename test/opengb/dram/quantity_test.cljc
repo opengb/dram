@@ -28,6 +28,7 @@
 (deftest specs
   (testing "spec validity"
     (is (s/valid? ::q/quantity (Q_ 5.0 "m**2")))
+    (is (s/valid? ::q/length (Q_ 5 "in")))
     (is (s/valid? ::q/area (Q_ 5.0 "m**2")))
     (is (s/valid? ::q/energy-use-intensity (Q_ 15.0 "kWh/m**2/year")))
     (is (s/valid? ::q/mass-per-year (Q_ 15.0 "t/year")))
