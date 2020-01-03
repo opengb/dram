@@ -1,11 +1,13 @@
 *.class
 *.jar
+.cljs_node_repl/
 .cpcache/
 .lein-deps-sum
 .lein-failures
 .lein-plugins/
 .lein-repl-history
 .nrepl-port
+.rebl/
 /.clj-kondo/.cache/
 /checkouts/
 /classes/
