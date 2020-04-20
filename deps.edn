@@ -1,10 +1,8 @@
-{:aliases
- {:test {:extra-deps
-         #:lambdaisland{kaocha #:mvn{:version "0.0-565"}
-                        kaocha-cljs #:mvn{:version "0.0-68"}}
-         :extra-paths ["test"]
-         :main-opts ["-m" "kaocha.runner"]}}
- :deps {org.clojure/clojure #:mvn{:version "1.10.1"}
-        org.clojure/spec.alpha #:mvn{:version "0.2.176"}
-        org.clojure/test.check #:mvn{:version "0.10.0"}}
- :paths ["src"]}
+{:paths ["src"]
+ :deps {org.clojure/clojure    {:mvn/version "1.10.1"}
+        org.clojure/spec.alpha {:mvn/version "0.2.187"}
+        org.clojure/test.check {:mvn/version "1.0.0"}}
+ :aliases {:test {:extra-deps {lambdaisland/kaocha      {:mvn/version "1.0-612"}
+                               lambdaisland/kaocha-cljs {:mvn/version "0.0-71"}}
+                  :extra-paths ["test"]
+                  :main-opts ["-m" "kaocha.runner"]}}}
