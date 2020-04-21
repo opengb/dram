@@ -20,3 +20,11 @@
   (let [ureg (sut/make-unit-registry)]
     (is (= {} (sut/define-unit ureg "dog_year = 52 * day = dy")))
     (is (= {} (sut/define-unit ureg "second = [time] = s = sec")))))
+
+(deftest quantity-type-equality
+  (let [ureg (sut/make-unit-registry)
+        Q_ (partial sut/make-quantity ureg)]
+    (prn (Q_ 1.0 "m"))
+    (is (= (Q_ 1.0 "m") (Q_ 1.0 "m")))
+    (is (not= (Q_ 1.0 "m") (Q_ 1.1 "m")))
+    (is (not= (Q_ 1.0 "m") (Q_ 1.0 "ft")))))

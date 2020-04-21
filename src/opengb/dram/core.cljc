@@ -18,9 +18,10 @@
   #_(str ureg "\n" _unit-definition))
 
 (defn valid-unit?
-  [_ureg _unit]
-  true ;; stubbed to test interface
-  #_(true? (get unit ureg)))
+  "Is the unit valid, or a combination of valid units?"
+  [_ureg unit]
+  ;; stubbed to test interface
+  (s/valid? ::unit unit))
 
 ;; * quantities
 
@@ -30,6 +31,12 @@
 
 (deftype quantity
          [^:double mag unit]
+  Object
+  (equals [this other]
+    (and (= (get-magnitude this) (get-magnitude other))
+         (= (get-unit this) (get-unit other))))
+  (toString [q]
+    (str "<" (get-magnitude q) " " (get-unit q) ">"))
   IQuantity
   (get-magnitude [q] (.-mag q))
   (get-unit [q] (.-unit q)))
@@ -43,3 +50,9 @@
   {:pre [(s/valid? ::magnitude mag)
          (valid-unit? unit-registry unit)]}
   (->quantity (double mag) unit))
+
+;; * specs
+
+(s/def ::magnitude number?)
+
+(s/def ::unit string?)
