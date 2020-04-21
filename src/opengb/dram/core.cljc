@@ -31,7 +31,7 @@
 
 (deftype Quantity
          [^:double mag unit]
-  Object
+  Object ;; needs to be in deftype, else no protocol java.lang.Object
   (equals [this other]
     (and (= (get-magnitude this) (get-magnitude other))
          (= (get-unit this) (get-unit other))))
@@ -40,6 +40,14 @@
   IQuantity
   (get-magnitude [q] (.-mag q))
   (get-unit [q] (.-unit q)))
+
+#?(:cljs
+   ;; not enough to do Object/equals in cljs??
+   (extend-type Quantity
+     IEquiv
+     (-equiv [this other]
+       (and (= (get-magnitude this) (get-magnitude other))
+            (= (get-unit this) (get-unit other))))))
 
 (defn quantity?
   [?q]
