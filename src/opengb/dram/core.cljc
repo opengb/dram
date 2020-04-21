@@ -29,7 +29,7 @@
   (get-unit [q]))
 
 (deftype quantity
-  [^:double mag unit]
+         [^:double mag unit]
   IQuantity
   (get-magnitude [q] (.-mag q))
   (get-unit [q] (.-unit q)))

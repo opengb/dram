@@ -18,5 +18,5 @@
 
 (deftest define-unit
   (let [ureg (sut/make-unit-registry)]
-  (is (= {} (sut/define-unit ureg "dog_year = 52 * day = dy")))
-  (is (= {} (sut/define-unit ureg "second = [time] = s = sec")))))
+    (is (= {} (sut/define-unit ureg "dog_year = 52 * day = dy")))
+    (is (= {} (sut/define-unit ureg "second = [time] = s = sec")))))
