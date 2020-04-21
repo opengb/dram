@@ -23,6 +23,10 @@
     (is (= STUB-REGISTRY (sut/define-unit ureg "dog_year = 52 * day = dy")))
     (is (= STUB-REGISTRY (sut/define-unit ureg "second = [time] = s = sec")))))
 
+(deftest define-prefix
+  (let [ureg (sut/make-unit-registry)]
+    (is (= STUB-REGISTRY (sut/define-prefix ureg "kilo- =  1e3   = k-")))))
+
 (deftest quantity-type-equality
   (let [ureg (sut/make-unit-registry)
         Q_ (partial sut/make-quantity ureg)]

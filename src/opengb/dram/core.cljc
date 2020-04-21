@@ -17,6 +17,11 @@
   ureg ;; stubbed to test interface
   #_(str ureg "\n" _unit-definition))
 
+(defn define-prefix
+  [ureg _prefix-definition]
+  ureg ;; stubbed to test interface
+  )
+
 (defn valid-unit?
   "Is the unit valid, or a combination of valid units?"
   [_ureg unit]
