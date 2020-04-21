@@ -3,8 +3,10 @@
    [clojure.test :as t :refer [deftest is]]
    [opengb.dram.core :as sut]))
 
+(def STUB-REGISTRY {})
+
 (deftest make-unit-registry
-  (is (= {} (sut/make-unit-registry))))
+  (is (= STUB-REGISTRY (sut/make-unit-registry))))
 
 (def time-definitions
   "See https://pint.readthedocs.io/en/0.10.1/defining.html#defining-units
@@ -18,8 +20,8 @@
 
 (deftest define-unit
   (let [ureg (sut/make-unit-registry)]
-    (is (= {} (sut/define-unit ureg "dog_year = 52 * day = dy")))
-    (is (= {} (sut/define-unit ureg "second = [time] = s = sec")))))
+    (is (= STUB-REGISTRY (sut/define-unit ureg "dog_year = 52 * day = dy")))
+    (is (= STUB-REGISTRY (sut/define-unit ureg "second = [time] = s = sec")))))
 
 (deftest quantity-type-equality
   (let [ureg (sut/make-unit-registry)
