@@ -29,7 +29,7 @@
   (get-magnitude [q])
   (get-unit [q]))
 
-(deftype quantity
+(deftype Quantity
          [^:double mag unit]
   Object
   (equals [this other]
@@ -43,13 +43,13 @@
 
 (defn quantity?
   [?q]
-  (= (type ?q) quantity))
+  (= (type ?q) Quantity))
 
 (defn make-quantity
   [unit-registry ^:double mag unit]
   {:pre [(s/valid? ::magnitude mag)
          (valid-unit? unit-registry unit)]}
-  (->quantity (double mag) unit))
+  (->Quantity (double mag) unit))
 
 ;; * specs
 
