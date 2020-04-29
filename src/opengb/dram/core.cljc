@@ -38,10 +38,11 @@
          [^:double mag unit]
   Object ;; needs to be in deftype, else no protocol java.lang.Object
   (equals [this other]
-    (and (= (get-magnitude this) (get-magnitude other))
+    (and (satisfies? IQuantity other)
+         (= (get-magnitude this) (get-magnitude other))
          (= (get-unit this) (get-unit other))))
   (toString [q]
-    (str "<" (get-magnitude q) " " (get-unit q) ">"))
+    (str "<< " (get-magnitude q) " " (get-unit q) " >>"))
   IQuantity
   (get-magnitude [q] (.-mag q))
   (get-unit [q] (.-unit q)))
