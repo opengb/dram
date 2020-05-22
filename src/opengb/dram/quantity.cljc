@@ -22,6 +22,9 @@
 
 ;; * Definitions
 
+(def time-unit? #{"millisecond" "second" "minute" "hour" "day" "week"
+                  "month" "year"})
+
 (def length-unit? #{"in" "ft" "yd" "mi" "mm" "cm" "m"})
 
 (def area-unit? (into #{} (map #(str % "**2")) length-unit?))
@@ -46,7 +49,8 @@
 (def known-units
   "adding combos is in fact ridiculous ... we should split out a dimensionality type
   and some ways of composing like pint does. But this'll work for our purposes."
-  (union length-unit?
+  (union time-unit?
+         length-unit?
          area-unit?
          eui-unit?
          mass-per-year-unit?
@@ -101,6 +105,8 @@
 (defn quantity?
   [x]
   (s/valid? ::quantity x))
+
+(s/def ::time (s/and quantity? #(time-unit? (get-unit %))))
 
 (s/def ::length (s/and quantity? #(length-unit? (get-unit %))))
 
