@@ -52,7 +52,8 @@
    (extend-type Quantity
      IEquiv
      (-equiv [this other]
-       (and (= (get-magnitude this) (get-magnitude other))
+       (and (satisfies? IQuantity other)
+            (= (get-magnitude this) (get-magnitude other))
             (= (get-unit this) (get-unit other))))))
 
 (defn quantity?
