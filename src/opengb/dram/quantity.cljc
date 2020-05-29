@@ -34,8 +34,8 @@
 
 (def mass-per-year-unit? #{"t/year" "kg/year" "Mg/year" "lb/year"})
 
-(def mass-intensity-unit? #{"kg/m**2/year" "t/m**2/year" "t/ft**2/year"
-                            "lb/ft**2/year"})
+(def mass-intensity-unit? #{"kg/m**2/year" "kg/ft**2/year" "t/m**2/year"
+                            "t/ft**2/year" "lb/ft**2/year"})
 
 (def volume-intensity-unit? #{"l/m**2/year"})
 
@@ -64,6 +64,7 @@
                           "lb/year"
                           "t/year"
                           "kBtu/ft**2/year"
+                          "kg/ft**2/year"
                           "kWh/ft**2/year"
                           "t/ft**2/year"
                           "lb/ft**2/year"})
@@ -173,13 +174,17 @@
 ;; ** US Customary and Metric
 
 (defn us-customary->metric
-  "Converts the given `quantity` from US Customary units to Metric."
+  "Converts the given `quantity` from US Customary units to Metric.
+
+  Conversion factors are taken from using Pint."
   [quantity]
   (let [mag  (get-magnitude quantity)
         unit (get-unit quantity)]
     (cond
       (= unit "ft**2")           (make-quantity (/ mag 3.28 3.28) "m**2")
       (= unit "kBtu/ft**2/year") (make-quantity (* mag 3.155) "kWh/m**2/year")
+      (= unit "kg/ft**2/year")   (make-quantity (* mag 10.76)
+                                                "kg/m**2/year")
       :else                      (throw (ex-info
                                          "Only supported for ft**2 and kBtu."
                                          {:quantity quantity})))))
@@ -208,6 +213,7 @@
             "m**2"            "m²"
             "kWh/m**2/year"   "kWh/m²"
             "kg/m**2/year"    "kg/m²"
+            "kg/ft**2/year"   "kg/ft²"
             "l/m**2/year"     "l/m²"
             "kBtu/ft**2/year" "kBtu/ft²/year"
             "ft**2"           "ft²"
