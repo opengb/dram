@@ -1,10 +1,10 @@
 (ns opengb.dram.quantity-test
   (:require
-    [clojure.spec.alpha :as s]
-    [clojure.test :as t :refer [deftest is are testing]]
-    [clojure.test.check.clojure-test :refer [defspec]]
-    [clojure.test.check.properties :as prop #?@(:cljs [:include-macros true])]
-    [opengb.dram.quantity :as q :refer [Q_]]))
+   [clojure.spec.alpha :as s]
+   [clojure.test :as t :refer [deftest is are testing]]
+   [clojure.test.check.clojure-test :refer [defspec]]
+   [clojure.test.check.properties :as prop #?@(:cljs [:include-macros true])]
+   [opengb.dram.quantity :as q :refer [Q_]]))
 
 ; (deftest can-tests-fail?
 ;   (is (= 1 2)))

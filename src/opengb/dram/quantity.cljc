@@ -1,8 +1,8 @@
 (ns opengb.dram.quantity
   "manipulating physical quantities"
   (:require
-    [clojure.set :refer [union]]
-    [clojure.spec.alpha :as s]))
+   [clojure.set :refer [union]]
+   [clojure.spec.alpha :as s]))
 
 ;; * Utilities
 
@@ -94,8 +94,8 @@
   (vector (double mag) unit))
 
 (s/fdef make-quantity
-        :args (s/cat :mag ::magnitude :unit ::unit)
-        :ret ::quantity)
+  :args (s/cat :mag ::magnitude :unit ::unit)
+  :ret ::quantity)
 
 (def Q_ make-quantity)
 
@@ -216,6 +216,5 @@
             "kg/ft**2/year"   "kg/ft²"
             "l/m**2/year"     "l/m²"
             "kBtu/ft**2/year" "kBtu/ft²/year"
-            "ft**2"           "ft²"
-            }]
+            "ft**2"           "ft²"}]
     (get cs unit unit)))

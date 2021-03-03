@@ -1,9 +1,9 @@
 (ns opengb.dram.quantity2
   "deftype-based implementation"
   (:require
-    [clojure.set :refer [union]]
-    [clojure.spec.alpha :as s]
-    [clojure.spec.gen.alpha :as gen]))
+   [clojure.set :refer [union]]
+   [clojure.spec.alpha :as s]
+   [clojure.spec.gen.alpha :as gen]))
 
 (def area-unit? #{"m**2" "ft**2"})
 
@@ -39,7 +39,7 @@
 ;; perf gain for reductions?
 ;; https://stackoverflow.com/questions/3132931/mutable-fields-in-clojure-deftype
 (deftype quantity
-  [^{#_#_:volatile-mutable true :double true} mag unit]
+         [^{#_#_:volatile-mutable true :double true} mag unit]
   IQuantity
   (get-magnitude [q] (.-mag q))
   ; (set-magnitude! [q mag'] (set! (.-mag q) mag'))
