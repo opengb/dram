@@ -181,7 +181,7 @@
   (let [mag  (get-magnitude quantity)
         unit (get-unit quantity)]
     (cond
-      (= unit "ft**2")           (make-quantity (/ mag 3.28 3.28) "m**2")
+      (= unit "ft**2")           (make-quantity (* mag 0.3048 0.3048) "m**2")
       (= unit "kBtu/ft**2/year") (make-quantity (* mag 3.155) "kWh/m**2/year")
       (= unit "kg/ft**2/year")   (make-quantity (* mag 10.76)
                                                 "kg/m**2/year")

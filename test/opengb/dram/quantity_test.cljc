@@ -42,3 +42,7 @@
   10
   (prop/for-all [x (s/gen ::q/quantity)]
                 (q/quantity? x)))
+
+(deftest conversions
+  (is (= (Q_ 6905.9474784 "m**2")
+         (q/us-customary->metric (Q_ 74335 "ft**2")))))
