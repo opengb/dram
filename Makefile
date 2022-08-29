@@ -4,6 +4,9 @@ all: test
 test: node_modules
 	clojure -A:test
 
+test-watch: node_modules
+	clojure -C:test -R:test -m kaocha.runner --watch
+
 lint:
 	clj-kondo --lint src test
 
