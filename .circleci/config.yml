@@ -1,22 +1,18 @@
-version: 2 # use CircleCI 2.0
-jobs: # basic units of work in a run
-  build: # runs not using Workflows must have a `build` job as entry point
-    working_directory: ~/opengb-dram # directory where steps will run
-    docker: # run the steps with Docker
-      - image: circleci/clojure:openjdk-11-tools-deps-node-browsers # ...with this image as the primary container; this is where all `steps` will run
-    environment: # environment variables for primary container
-      JVM_OPTS: -Xmx3200m # limit the maximum heap size to prevent out of memory errors
-    steps: # commands that comprise the `build` job
-      - checkout # check out source code to working directory
-      - restore_cache: # restores saved cache if checksum hasn't changed since the last run
-          key: cci-demo-clojure-{{ checksum "deps.edn" }}
-      - run: clojure -R:test -Stree
-      - save_cache: # generate and store cache in the .m2 directory using a key template
+version: 2
+jobs:
+  build:
+    working_directory: ~/opengb-dram
+    docker:
+      - image: cimg/clojure:1.11.1-openjdk-17.0-browsers
+    environment:
+      JVM_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - restore_cache:
+          key: dram-{{ checksum "deps.edn" }}
+      - run: clojure -P
+      - save_cache:
           paths:
             - ~/.m2
-          key: cci-demo-clojure-{{ checksum "deps.edn" }}
-      - run: make test
-      # - store_artifacts: # Upload test summary for display in Artifacts: https://circleci.com/docs/2.0/artifacts/
-      #     path: target/uberjar/cci-demo-clojure.jar
-      #     destination: uberjar
-      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
+          key: dram-{{ checksum "deps.edn" }}
+      - run: clojure -A:test
