@@ -220,8 +220,8 @@
             "l/m**2/year"      "l/m²"
             "kBtu/ft**2/year"  "kBtu/ft²/year"
             "ft**2"            "ft²"
-            "kgCO2e/m**2/year" "kgCO₂e/m²/year"
-            "tCO2e/year"       "tCO₂e/year"
+            "kgCO2e/m**2/year" "kgCO₂e/m²"
+            "tCO2e/year"       "tCO₂e"
             "energystar"       ""
             "year"             ""}]
     (get cs unit unit)))
