@@ -46,6 +46,8 @@
 
 (def pressure-unit? #{"kPa" "lb/ft**2"})
 
+(def custom-unit? #{"kgCO2e/m**2/year" "tCO2e/year" "energystar" "year"})
+
 (def known-units
   "adding combos is in fact ridiculous ... we should split out a dimensionality type
   and some ways of composing like pint does. But this'll work for our purposes."
@@ -58,7 +60,8 @@
          volume-intensity-unit?
          per-year-unit?
          thermal-transmittance-unit?
-         pressure-unit?))
+         pressure-unit?
+         custom-unit?))
 
 (def us-customary-unit? #{"ft**2"
                           "lb/year"
@@ -202,19 +205,23 @@
 (defn unit->ui-string
   "Formats the `unit` for display to a user."
   [unit]
-  (let [cs {:mi2              "sq mi"
-            :ft2              "sq ft"
-            :ft2_a            "ft²/year"
-            :USD_ft2_a        "USD/ft²/year"
-            :m2               "m²"
-            :GJ_m2_a          "GJ/m²/year"
-            :kWh_m2_a         "kWh/m²/year"
-            :tCO2e_a          "tCO₂e/year"
-            "m**2"            "m²"
-            "kWh/m**2/year"   "kWh/m²"
-            "kg/m**2/year"    "kg/m²"
-            "kg/ft**2/year"   "kg/ft²"
-            "l/m**2/year"     "l/m²"
-            "kBtu/ft**2/year" "kBtu/ft²/year"
-            "ft**2"           "ft²"}]
+  (let [cs {:mi2               "sq mi"
+            :ft2               "sq ft"
+            :ft2_a             "ft²/year"
+            :USD_ft2_a         "USD/ft²/year"
+            :m2                "m²"
+            :GJ_m2_a           "GJ/m²/year"
+            :kWh_m2_a          "kWh/m²/year"
+            :tCO2e_a           "tCO₂e/year"
+            "m**2"             "m²"
+            "kWh/m**2/year"    "kWh/m²"
+            "kg/m**2/year"     "kg/m²"
+            "kg/ft**2/year"    "kg/ft²"
+            "l/m**2/year"      "l/m²"
+            "kBtu/ft**2/year"  "kBtu/ft²/year"
+            "ft**2"            "ft²"
+            "kgCO2e/m**2/year" "kgCO₂e/m²"
+            "tCO2e/year"       "tCO₂e"
+            "energystar"       ""
+            "year"             ""}]
     (get cs unit unit)))
