@@ -40,7 +40,7 @@
 
 (def volume-intensity-unit? #{"l/m**2/year" "gal/ft**2/year"})
 
-(def per-year-unit? #{"kWh/year" "l/year" "gal/year"})
+(def per-year-unit? #{"kWh/year" "l/year" "gal/year" "kBtu/year"})
 
 (def thermal-transmittance-unit? #{"Btu/hr*ft**2*°F"
                                    "W/m**2*K"})
@@ -75,7 +75,8 @@
                           "kgCO₂e/ft²"
                           "kgCO₂e/ft²/year"
                           "gal/ft**2/year"
-                          "gal/year"})
+                          "gal/year"
+                          "kBtu/year"})
 
 (def semi-imperial-unit?
   "A hash set of the units that are used when viewing quantities in units that
