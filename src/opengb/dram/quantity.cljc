@@ -35,7 +35,8 @@
 (def mass-per-year-unit? #{"t/year" "kg/year" "Mg/year" "lb/year" "tCO₂e" "tCO₂e/year"})
 
 (def mass-intensity-unit? #{"kg/m**2/year" "kg/ft**2/year" "t/m**2/year"
-                            "t/ft**2/year" "lb/ft**2/year" "kgCO₂e/m²" "kgCO₂e/m²/year"})
+                            "t/ft**2/year" "lb/ft**2/year" "kgCO₂e/m²"
+                            "kgCO₂e/m²/year" "kgCO₂e/ft²" "kgCO₂e/ft²/year"})
 
 (def volume-intensity-unit? #{"l/m**2/year"})
 
@@ -70,7 +71,9 @@
                           "kg/ft**2/year"
                           "kWh/ft**2/year"
                           "t/ft**2/year"
-                          "lb/ft**2/year"})
+                          "lb/ft**2/year"
+                          "kgCO₂e/ft²"
+                          "kgCO₂e/ft²/year"})
 
 (def metric-unit? #{"m**2"
                     "kg/m**2/year"
@@ -81,7 +84,9 @@
                     "kWh/m**2/year"
                     "l/m**2/year"
                     "kWh/year"
-                    "l/year"})
+                    "l/year"
+                    "kgCO₂e/m²"
+                    "kgCO₂e/m²/year"})
 
 (s/def ::magnitude (s/or :int int?
                          :double (s/double-in :infinite? false :NaN? false)))
