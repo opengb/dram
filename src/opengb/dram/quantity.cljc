@@ -38,7 +38,7 @@
                             "t/ft**2/year" "lb/ft**2/year" "kgCO₂e/m²"
                             "kgCO₂e/m²/year" "kgCO₂e/ft²" "kgCO₂e/ft²/year"})
 
-(def volume-intensity-unit? #{"l/m**2/year"})
+(def volume-intensity-unit? #{"l/m**2/year" "gal/ft**2/year"})
 
 (def per-year-unit? #{"kWh/year" "l/year"})
 
@@ -73,7 +73,8 @@
                           "t/ft**2/year"
                           "lb/ft**2/year"
                           "kgCO₂e/ft²"
-                          "kgCO₂e/ft²/year"})
+                          "kgCO₂e/ft²/year"
+                          "gal/ft**2/year"})
 
 (def metric-unit? #{"m**2"
                     "kg/m**2/year"
