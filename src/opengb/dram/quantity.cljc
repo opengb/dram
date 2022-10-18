@@ -101,7 +101,8 @@
                     "kWh/year"
                     "l/year"
                     "kgCO₂e/m²"
-                    "kgCO₂e/m²/year"})
+                    "kgCO₂e/m²/year"
+                    "tCO₂e"})
 
 (s/def ::magnitude (s/or :int int?
                          :double (s/double-in :infinite? false :NaN? false)))
