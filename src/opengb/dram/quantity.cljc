@@ -246,5 +246,6 @@
             "kgCO2e/m**2/year" "kgCO₂e/m²"
             "tCO2e/year"       "tCO₂e"
             "energystar"       ""
-            "year"             ""}]
+            "year"             ""
+            "gal/ft**2/year"   "gal/ft²/year"}]
     (get cs unit unit)))
