@@ -79,11 +79,9 @@
                           "kBtu/year"})
 
 (def semi-imperial-unit?
-  "A hash set of the units that are used when viewing quantities in units that
-  are combinations of both Metric and US Customary units. Sometimes used in
-  Canada.
-  This hash set can be used as a predicate to test whether a unit belongs to
-  this particular system of measurement."
+  "A hash set of units that are combinations of other Metric and US Customary
+  units. Sometimes used in Canada. This hash set can be used as a predicate to
+  test whether a unit belongs to this particular system of measurement."
   #{"ft**2"
     "kWh/ft**2/year"
     "tCO₂e"
