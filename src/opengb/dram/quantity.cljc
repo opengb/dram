@@ -35,11 +35,12 @@
 (def mass-per-year-unit? #{"t/year" "kg/year" "Mg/year" "lb/year" "tCO₂e" "tCO₂e/year"})
 
 (def mass-intensity-unit? #{"kg/m**2/year" "kg/ft**2/year" "t/m**2/year"
-                            "t/ft**2/year" "lb/ft**2/year" "kgCO₂e/m²" "kgCO₂e/m²/year"})
+                            "t/ft**2/year" "lb/ft**2/year" "kgCO₂e/m²"
+                            "kgCO₂e/m²/year" "kgCO₂e/ft²" "kgCO₂e/ft²/year"})
 
-(def volume-intensity-unit? #{"l/m**2/year"})
+(def volume-intensity-unit? #{"l/m**2/year" "gal/ft**2/year"})
 
-(def per-year-unit? #{"kWh/year" "l/year"})
+(def per-year-unit? #{"kWh/year" "l/year" "gal/year" "kBtu/year"})
 
 (def thermal-transmittance-unit? #{"Btu/hr*ft**2*°F"
                                    "W/m**2*K"})
@@ -70,7 +71,22 @@
                           "kg/ft**2/year"
                           "kWh/ft**2/year"
                           "t/ft**2/year"
-                          "lb/ft**2/year"})
+                          "lb/ft**2/year"
+                          "kgCO₂e/ft²"
+                          "kgCO₂e/ft²/year"
+                          "gal/ft**2/year"
+                          "gal/year"
+                          "kBtu/year"})
+
+(def semi-imperial-unit?
+  "A hash set of units that are combinations of other Metric and US Customary
+  units. Sometimes used in Canada. This hash set can be used as a predicate to
+  test whether a unit belongs to this particular system of measurement."
+  #{"ft**2"
+    "kWh/ft**2/year"
+    "tCO₂e"
+    "kgCO₂e/ft²"
+    "l/ft**2/year"})
 
 (def metric-unit? #{"m**2"
                     "kg/m**2/year"
@@ -81,7 +97,10 @@
                     "kWh/m**2/year"
                     "l/m**2/year"
                     "kWh/year"
-                    "l/year"})
+                    "l/year"
+                    "kgCO₂e/m²"
+                    "kgCO₂e/m²/year"
+                    "tCO₂e"})
 
 (s/def ::magnitude (s/or :int int?
                          :double (s/double-in :infinite? false :NaN? false)))
@@ -129,6 +148,8 @@
 (s/def ::pressure (s/and quantity? #(pressure-unit? (get-unit %))))
 
 (s/def ::us-customary (s/and quantity? #(us-customary-unit? (get-unit %))))
+
+(s/def ::semi-imperial (s/and quantity? #(semi-imperial-unit? (get-unit %))))
 
 (s/def ::metric (s/and quantity? #(metric-unit? (get-unit %))))
 
@@ -223,5 +244,6 @@
             "kgCO2e/m**2/year" "kgCO₂e/m²"
             "tCO2e/year"       "tCO₂e"
             "energystar"       ""
-            "year"             ""}]
+            "year"             ""
+            "gal/ft**2/year"   "gal/ft²/year"}]
     (get cs unit unit)))
