@@ -29,6 +29,9 @@
 
 (def area-unit? (into #{} (map #(str % "**2")) length-unit?))
 
+(def energy-unit?
+  #{"kBtu" "GJ"})
+
 (def eui-unit?
   #{"kBtu/ft**2/year" "GJ/m**2/year" "kWh/m**2/year" "kWh/ft**2/year"})
 
@@ -55,6 +58,7 @@
   (union time-unit?
          length-unit?
          area-unit?
+         energy-unit?
          eui-unit?
          mass-per-year-unit?
          mass-intensity-unit?
@@ -76,7 +80,8 @@
                           "kgCO₂e/ft²/year"
                           "gal/ft**2/year"
                           "gal/year"
-                          "kBtu/year"})
+                          "kBtu/year"
+                          "kBtu"})
 
 (def semi-imperial-unit?
   "A hash set of units that are combinations of other Metric and US Customary
@@ -100,7 +105,8 @@
                     "l/year"
                     "kgCO₂e/m²"
                     "kgCO₂e/m²/year"
-                    "tCO₂e"})
+                    "tCO₂e"
+                    "GJ"})
 
 (s/def ::magnitude (s/or :int int?
                          :double (s/double-in :infinite? false :NaN? false)))
@@ -134,6 +140,8 @@
 (s/def ::length (s/and quantity? #(length-unit? (get-unit %))))
 
 (s/def ::area (s/and quantity? #(area-unit? (get-unit %))))
+
+(s/def ::energy (s/and quantity? #(energy-unit? (get-unit %))))
 
 (s/def ::energy-use-intensity (s/and quantity? #(eui-unit? (get-unit %))))
 
@@ -209,6 +217,7 @@
       (= unit "kBtu/ft**2/year") (make-quantity (* mag 3.155) "kWh/m**2/year")
       (= unit "kg/ft**2/year")   (make-quantity (* mag 10.76)
                                                 "kg/m**2/year")
+      (= unit "kBtu")            (make-quantity (* mag 0.001055) "GJ")
       :else                      (throw (ex-info
                                          "Only supported for ft**2 and kBtu."
                                          {:quantity quantity})))))
