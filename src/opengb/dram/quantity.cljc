@@ -161,6 +161,28 @@
 
 (s/def ::metric (s/and quantity? #(metric-unit? (get-unit %))))
 
+;; * Comparisons
+
+(defn q= 
+  "Returns true if quantities have the same unit and magnitude."
+  [a b] 
+  (and (= (get-unit a) (get-unit b))
+       (= (get-magnitude a) (get-magnitude b))))
+
+(defn q< 
+  "Returns true if quantities have the same unit and the magnitude of a is less
+  than the magnitude of b."
+  [a b] 
+  (and (= (get-unit a) (get-unit b))
+       (< (get-magnitude a) (get-magnitude b))))
+
+(defn q<= 
+  "Returns true if quantities have the same unit and the magnitude of a is less
+  than or equal to the magnitude of b."
+  [a b] 
+  (and (= (get-unit a) (get-unit b))
+       (<= (get-magnitude a) (get-magnitude b))))
+
 ;; * Conversions
 
 ;; ** Making Quantities

@@ -46,3 +46,17 @@
 (deftest conversions
   (is (= (Q_ 6905.9474784 "m**2")
          (q/us-customary->metric (Q_ 74335 "ft**2")))))
+
+(deftest comparisons
+  (testing "equality"
+    (is (q/q= (Q_ 5 "m**2") (Q_ 5 "m**2")))
+    (is (not (q/q= (Q_ 5 "m**2") (Q_ 4 "m**2")))))
+  (testing "different units"
+    (is (not (q/q= (Q_ 5 "m**2") (Q_ 5 "ft**2")))))
+  (testing "less than"
+    (is (q/q< (Q_ 5 "m**2") (Q_ 6 "m**2")))
+    (is (not (q/q< (Q_ 5 "m**2") (Q_ 4 "m**2")))))
+  (testing "less than or equal"
+    (is (q/q<= (Q_ 5 "m**2") (Q_ 5 "m**2")))
+    (is (q/q<= (Q_ 5 "m**2") (Q_ 6 "m**2")))
+    (is (not (q/q<= (Q_ 5 "m**2") (Q_ 4 "m**2"))))))
