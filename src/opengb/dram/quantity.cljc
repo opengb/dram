@@ -135,6 +135,16 @@
   [x]
   (s/valid? ::quantity x))
 
+(defn quantity-of-unit?
+  "Returns true if quantity is of provided unit. 
+  Single arity returns a predicate for that unit."
+  ([unit]
+   (partial quantity-of-unit? unit))
+  ([unit quantity]
+   (and (s/valid? ::unit unit)
+        (s/valid? ::quantity quantity)
+        (= unit (get-unit quantity)))))
+
 (s/def ::time (s/and quantity? #(time-unit? (get-unit %))))
 
 (s/def ::length (s/and quantity? #(length-unit? (get-unit %))))
