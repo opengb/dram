@@ -136,7 +136,7 @@
   (s/valid? ::quantity x))
 
 (defn quantity-of-unit?
-  "Returns true if quantity is of provided unit. 
+  "Returns true if quantity matches provided unit. 
   Single arity returns a predicate for that unit."
   ([unit]
    (partial quantity-of-unit? unit))
@@ -273,10 +273,10 @@
             :USD_ft2_a         "USD/ft²/year"
             :m2                "m²"
             :GJ_m2_a           "GJ/m²/year"
-            :kWh_m2_a          "kWh/m²/year"
+            :kWh_m2_a          "ekWh/m²/year" ;; HACK: we should have separate definitions for 'kWh/m**2/year' and 'ekWh/m**2/year'!
             :tCO2e_a           "tCO₂e/year"
             "m**2"             "m²"
-            "kWh/m**2/year"    "kWh/m²"
+            "kWh/m**2/year"    "ekWh/m²" ;; HACK: we should have separate definitions for 'kWh/m**2/year' and 'ekWh/m**2/year'!
             "kg/m**2/year"     "kg/m²"
             "kg/ft**2/year"    "kg/ft²"
             "l/m**2/year"      "l/m²"
