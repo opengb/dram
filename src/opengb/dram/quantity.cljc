@@ -2,7 +2,8 @@
   "manipulating physical quantities"
   (:require
    [clojure.set :refer [union]]
-   [clojure.spec.alpha :as s]))
+   [clojure.spec.alpha :as s]
+   [clojure.string :as str]))
 
 ;; * Utilities
 
@@ -22,35 +23,50 @@
 
 ;; * Definitions
 
-(def time-unit? #{"millisecond" "second" "minute" "hour" "day" "week"
-                  "month" "year"})
+(defn- script-variant [unit]
+  (-> unit
+      (str/replace #"\*\*2" "²")
+      (str/replace #"CO2" "CO₂")))
+
+(defn- add-script-variants [units]
+  (into units (map script-variant) units))
+
+(def time-unit? #{"millisecond" "second" "minute" "hour" "day" "week" "month" "year"})
 
 (def length-unit? #{"in" "ft" "yd" "mi" "mm" "cm" "m"})
 
-(def area-unit? (into #{} (map #(str % "**2")) length-unit?))
+(def area-unit? (add-script-variants (into #{} (map #(str % "**2")) length-unit?)))
 
-(def energy-unit?
-  #{"kBtu" "GJ"})
+(def energy-unit? #{"kBtu" "GJ"})
 
-(def eui-unit?
-  #{"kBtu/ft**2/year" "GJ/m**2/year" "kWh/m**2/year" "kWh/ft**2/year"})
+(def eui-unit? (add-script-variants #{"kBtu/ft**2/year"
+                                      "GJ/m**2/year"
+                                      "kWh/m**2/year"
+                                      "kWh/ft**2/year"}))
 
-(def mass-per-year-unit? #{"t/year" "kg/year" "Mg/year" "lb/year" "tCO₂e" "tCO₂e/year"})
+(def mass-per-year-unit? (add-script-variants #{"t/year" "kg/year" "Mg/year" "lb/year" "tCO2e" "tCO2e/year"}))
 
-(def mass-intensity-unit? #{"kg/m**2/year" "kg/ft**2/year" "t/m**2/year"
-                            "t/ft**2/year" "lb/ft**2/year" "kgCO₂e/m²"
-                            "kgCO₂e/m²/year" "kgCO₂e/ft²" "kgCO₂e/ft²/year"})
+(def mass-intensity-unit? (add-script-variants #{"kg/m**2/year"
+                                                 "kg/ft**2/year"
+                                                 "t/m**2/year"
+                                                 "t/ft**2/year"
+                                                 "lb/ft**2/year"
+                                                 "kgCO2e/m**2"
+                                                 "kgCO2e/m**2/year"
+                                                 "kgCO2e/ft**2"
+                                                 "kgCO2e/ft**2/year"}))
 
-(def volume-intensity-unit? #{"l/m**2/year" "gal/ft**2/year"})
+(def volume-intensity-unit? (add-script-variants #{"l/m**2/year"
+                                                   "gal/ft**2/year"}))
 
 (def per-year-unit? #{"kWh/year" "l/year" "gal/year" "kBtu/year"})
 
-(def thermal-transmittance-unit? #{"Btu/hr*ft**2*°F"
-                                   "W/m**2*K"})
+(def thermal-transmittance-unit? (add-script-variants #{"Btu/hr*ft**2*°F"
+                                                        "W/m**2*K"}))
 
-(def pressure-unit? #{"kPa" "lb/ft**2"})
+(def pressure-unit? (add-script-variants #{"kPa" "lb/ft**2"}))
 
-(def custom-unit? #{"kgCO2e/m**2/year" "tCO2e/year" "energystar" "year"})
+(def custom-unit? (add-script-variants #{"kgCO2e/m**2/year" "tCO2e/year" "energystar" "year"}))
 
 (def known-units
   "adding combos is in fact ridiculous ... we should split out a dimensionality type
@@ -68,45 +84,45 @@
          pressure-unit?
          custom-unit?))
 
-(def us-customary-unit? #{"ft**2"
-                          "lb/year"
-                          "t/year"
-                          "kBtu/ft**2/year"
-                          "kg/ft**2/year"
-                          "kWh/ft**2/year"
-                          "t/ft**2/year"
-                          "lb/ft**2/year"
-                          "kgCO₂e/ft²"
-                          "kgCO₂e/ft²/year"
-                          "gal/ft**2/year"
-                          "gal/year"
-                          "kBtu/year"
-                          "kBtu"})
+(def us-customary-unit? (add-script-variants #{"ft**2"
+                                               "lb/year"
+                                               "t/year"
+                                               "kBtu/ft**2/year"
+                                               "kg/ft**2/year"
+                                               "kWh/ft**2/year"
+                                               "t/ft**2/year"
+                                               "lb/ft**2/year"
+                                               "kgCO2e/ft**2"
+                                               "kgCO2e/ft**2/year"
+                                               "gal/ft**2/year"
+                                               "gal/year"
+                                               "kBtu/year"
+                                               "kBtu"}))
 
 (def semi-imperial-unit?
   "A hash set of units that are combinations of other Metric and US Customary
   units. Sometimes used in Canada. This hash set can be used as a predicate to
   test whether a unit belongs to this particular system of measurement."
-  #{"ft**2"
-    "kWh/ft**2/year"
-    "tCO₂e"
-    "kgCO₂e/ft²"
-    "l/ft**2/year"})
+  (add-script-variants #{"ft**2"
+                         "kWh/ft**2/year"
+                         "tCO2e"
+                         "kgCO2e/ft**2"
+                         "l/ft**2/year"}))
 
-(def metric-unit? #{"m**2"
-                    "kg/m**2/year"
-                    "t/m**2/year"
-                    "GJ/m**2/year"
-                    "kg/year"
-                    "Mg/year"
-                    "kWh/m**2/year"
-                    "l/m**2/year"
-                    "kWh/year"
-                    "l/year"
-                    "kgCO₂e/m²"
-                    "kgCO₂e/m²/year"
-                    "tCO₂e"
-                    "GJ"})
+(def metric-unit? (add-script-variants #{"m**2"
+                                         "kg/m**2/year"
+                                         "t/m**2/year"
+                                         "GJ/m**2/year"
+                                         "kg/year"
+                                         "Mg/year"
+                                         "kWh/m**2/year"
+                                         "l/m**2/year"
+                                         "kWh/year"
+                                         "l/year"
+                                         "kgCO2e/m**2"
+                                         "kgCO2e/m**2/year"
+                                         "tCO2e"
+                                         "GJ"}))
 
 (s/def ::magnitude (s/or :int int?
                          :double (s/double-in :infinite? false :NaN? false)))
@@ -136,7 +152,7 @@
   (s/valid? ::quantity x))
 
 (defn quantity-of-unit?
-  "Returns true if quantity matches provided unit. 
+  "Returns true if quantity matches provided unit.
   Single arity returns a predicate for that unit."
   ([unit]
    (partial quantity-of-unit? unit))
@@ -173,23 +189,23 @@
 
 ;; * Comparisons
 
-(defn q= 
+(defn q=
   "Returns true if quantities have the same unit and magnitude."
-  [a b] 
+  [a b]
   (and (= (get-unit a) (get-unit b))
        (= (get-magnitude a) (get-magnitude b))))
 
-(defn q< 
+(defn q<
   "Returns true if quantities have the same unit and the magnitude of a is less
   than the magnitude of b."
-  [a b] 
+  [a b]
   (and (= (get-unit a) (get-unit b))
        (< (get-magnitude a) (get-magnitude b))))
 
-(defn q<= 
+(defn q<=
   "Returns true if quantities have the same unit and the magnitude of a is less
   than or equal to the magnitude of b."
-  [a b] 
+  [a b]
   (and (= (get-unit a) (get-unit b))
        (<= (get-magnitude a) (get-magnitude b))))
 
