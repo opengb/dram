@@ -23,7 +23,7 @@
 
 ;; * Definitions
 
-(defn- script-variant [unit]
+(defn script-variant [unit]
   (-> unit
       (str/replace #"\*\*2" "²")
       (str/replace #"CO2" "CO₂")))
