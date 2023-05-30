@@ -293,6 +293,7 @@
             :tCO2e_a           "tCO₂e/year"
             "m**2"             "m²"
             "kWh/m**2/year"    "ekWh/m²" ;; HACK: we should have separate definitions for 'kWh/m**2/year' and 'ekWh/m**2/year'!
+            "GJ/m**2/year"     "GJ/m²"
             "kg/m**2/year"     "kg/m²"
             "kg/ft**2/year"    "kg/ft²"
             "l/m**2/year"      "l/m²"
