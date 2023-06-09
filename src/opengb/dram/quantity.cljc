@@ -37,7 +37,7 @@
 
 (def area-unit? (add-script-variants (into #{} (map #(str % "**2")) length-unit?)))
 
-(def energy-unit? #{"kBtu" "GJ"})
+(def energy-unit? #{"kBtu" "GJ" "kWh"})
 
 (def eui-unit? (add-script-variants #{"kBtu/ft**2/year"
                                       "GJ/m**2/year"
