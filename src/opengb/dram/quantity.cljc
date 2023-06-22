@@ -300,6 +300,7 @@
             "kBtu/ft**2/year"  "kBtu/ft²/year"
             "ft**2"            "ft²"
             "kgCO2e/m**2/year" "kgCO₂e/m²"
+            "kgCO2e/ft**2/year" "kgCO₂e/ft²"
             "tCO2e/year"       "tCO₂e"
             "energystar"       ""
             "year"             ""
