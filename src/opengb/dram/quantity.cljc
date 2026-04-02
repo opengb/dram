@@ -44,15 +44,17 @@
                                       "kWh/m**2/year"
                                       "kWh/ft**2/year"}))
 
-(def mass-per-year-unit? (add-script-variants #{"t/year" "kg/year" "Mg/year" "lb/year" "tCO2e" "tCO2e/year"}))
+(def mass-per-year-unit? (add-script-variants #{"t/year" "kg/year" "Mg/year" "lb/year" "tCO2e" "tCO_2e" "tCO2e/year"}))
 
 (def mass-intensity-unit? (add-script-variants #{"kg/m**2/year"
                                                  "kg/ft**2/year"
                                                  "t/m**2/year"
                                                  "t/ft**2/year"
                                                  "lb/ft**2/year"
+                                                 "kgCO_2e/m**2"
                                                  "kgCO2e/m**2"
                                                  "kgCO2e/m**2/year"
+                                                 "kgCO_2e/ft**2"
                                                  "kgCO2e/ft**2"
                                                  "kgCO2e/ft**2/year"}))
 
