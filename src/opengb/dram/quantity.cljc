@@ -23,13 +23,37 @@
 
 ;; * Definitions
 
-(defn script-variant [unit]
-  (-> unit
-      (str/replace #"\*\*2" "²")
-      (str/replace #"CO2" "CO₂")))
+(def ^:private unit-str-substitutions
+  "Common special character substitutions."
+  [["**2" "²"]
+   ["_2" "₂"]
+   ["_2" "2"]])
+
+(def ^:private unit-str-substitutions-grouped
+  "Common special character substitutions, grouped by their unsubstituted
+  representation."
+  (reduce (fn [acc [find-str replace-str]]
+            (update acc find-str (fnil conj []) replace-str))
+          {}
+          unit-str-substitutions))
+
+(defn script-variants [unit]
+  (let [substitutions {"**2" ["²"]
+                       "_2"  ["₂" "2"]}]
+    (reduce (fn [strings [find-str replace-strs]]
+              (for [s strings
+                    r (cons nil replace-strs)]
+                (if r
+                  (str/replace s find-str r)
+                  s)))
+            [unit]
+            unit-str-substitutions-grouped)))
 
 (defn- add-script-variants [units]
-  (into units (map script-variant) units))
+  (into units
+        (comp (mapcat script-variants)
+              (distinct))
+        units))
 
 (def time-unit? #{"millisecond" "second" "minute" "hour" "day" "week" "month" "year"})
 
@@ -44,7 +68,7 @@
                                       "kWh/m**2/year"
                                       "kWh/ft**2/year"}))
 
-(def mass-per-year-unit? (add-script-variants #{"t/year" "kg/year" "Mg/year" "lb/year" "tCO2e" "tCO_2e" "Metric Tons C02e" "tCO2e/year"}))
+(def mass-per-year-unit? (add-script-variants #{"t/year" "kg/year" "Mg/year" "lb/year" "tCO_2e" "Metric Tons CO_2e" "tCO_2e/year"}))
 
 (def mass-intensity-unit? (add-script-variants #{"kg/m**2/year"
                                                  "kg/ft**2/year"
@@ -52,11 +76,9 @@
                                                  "t/ft**2/year"
                                                  "lb/ft**2/year"
                                                  "kgCO_2e/m**2"
-                                                 "kgCO2e/m**2"
-                                                 "kgCO2e/m**2/year"
+                                                 "kgCO_2e/m**2/year"
                                                  "kgCO_2e/ft**2"
-                                                 "kgCO2e/ft**2"
-                                                 "kgCO2e/ft**2/year"}))
+                                                 "kgCO_2e/ft**2/year"}))
 
 (def volume-intensity-unit? (add-script-variants #{"l/m**2/year"
                                                    "gal/ft**2/year"}))
@@ -68,7 +90,7 @@
 
 (def pressure-unit? (add-script-variants #{"kPa" "lb/ft**2"}))
 
-(def custom-unit? (add-script-variants #{"kgCO2e/m**2/year" "tCO2e/year" "energystar" "year"}))
+(def custom-unit? (add-script-variants #{"kgCO_2e/m**2/year" "tCO_2e/year" "energystar" "year"}))
 
 (def known-units
   "adding combos is in fact ridiculous ... we should split out a dimensionality type
@@ -94,8 +116,8 @@
                                                "kWh/ft**2/year"
                                                "t/ft**2/year"
                                                "lb/ft**2/year"
-                                               "kgCO2e/ft**2"
-                                               "kgCO2e/ft**2/year"
+                                               "kgCO_2e/ft**2"
+                                               "kgCO_2e/ft**2/year"
                                                "gal/ft**2/year"
                                                "gal/year"
                                                "kBtu/year"
@@ -107,8 +129,8 @@
   test whether a unit belongs to this particular system of measurement."
   (add-script-variants #{"ft**2"
                          "kWh/ft**2/year"
-                         "tCO2e"
-                         "kgCO2e/ft**2"
+                         "tCO_2e"
+                         "kgCO_2e/ft**2"
                          "l/ft**2/year"}))
 
 (def metric-unit? (add-script-variants #{"m**2"
@@ -121,9 +143,9 @@
                                          "l/m**2/year"
                                          "kWh/year"
                                          "l/year"
-                                         "kgCO2e/m**2"
-                                         "kgCO2e/m**2/year"
-                                         "tCO2e"
+                                         "kgCO_2e/m**2"
+                                         "kgCO_2e/m**2/year"
+                                         "tCO_2e"
                                          "GJ"}))
 
 (s/def ::magnitude (s/or :int int?
