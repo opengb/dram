@@ -121,7 +121,9 @@
                                                "gal/ft**2/year"
                                                "gal/year"
                                                "kBtu/year"
-                                               "kBtu"}))
+                                               "kBtu"
+                                               "tCO_2e"
+                                               "tCO_2e/year"}))
 
 (def semi-imperial-unit?
   "A hash set of units that are combinations of other Metric and US Customary
@@ -131,7 +133,9 @@
                          "kWh/ft**2/year"
                          "tCO_2e"
                          "kgCO_2e/ft**2"
-                         "l/ft**2/year"}))
+                         "l/ft**2/year"
+                         "tCO_2e"
+                         "tCO_2e/year"}))
 
 (def metric-unit? (add-script-variants #{"m**2"
                                          "kg/m**2/year"
@@ -146,7 +150,9 @@
                                          "kgCO_2e/m**2"
                                          "kgCO_2e/m**2/year"
                                          "tCO_2e"
-                                         "GJ"}))
+                                         "GJ"
+                                         "tCO_2e"
+                                         "tCO_2e/year"}))
 
 (s/def ::magnitude (s/or :int int?
                          :double (s/double-in :infinite? false :NaN? false)))
