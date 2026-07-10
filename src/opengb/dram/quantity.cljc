@@ -131,7 +131,6 @@
   test whether a unit belongs to this particular system of measurement."
   (add-script-variants #{"ft**2"
                          "kWh/ft**2/year"
-                         "tCO_2e"
                          "kgCO_2e/ft**2"
                          "l/ft**2/year"
                          "tCO_2e"
@@ -149,7 +148,6 @@
                                          "l/year"
                                          "kgCO_2e/m**2"
                                          "kgCO_2e/m**2/year"
-                                         "tCO_2e"
                                          "GJ"
                                          "tCO_2e"
                                          "tCO_2e/year"}))
